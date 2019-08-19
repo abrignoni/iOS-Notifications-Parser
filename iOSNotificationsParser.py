@@ -10,6 +10,9 @@ import os
 import glob
 import datetime
 import argparse
+from time import process_time
+
+start = process_time()
 
 #load common notification parameters
 with open('NotificationParams.txt', 'r') as f:
@@ -21,6 +24,9 @@ cocoa = datetime.datetime(2001, 1, 1)  # UTC
 delta = cocoa - unix 
 
 pathfound = 0
+count = 0
+notdircount = 0
+exportedbplistcount = 0
 
 parser = argparse.ArgumentParser(description="\
 	iOS Notifications Traige Parser\
@@ -58,7 +64,8 @@ else:
 			#create directory
 			if 'DeliveredNotifications' in file_name:
 				#create directory where script is running from
-				print (filename) #full path 
+				print (filename) #full path
+				notdircount = notdircount + 1				
 				#print (os.path.basename(file_name)) #filename with  no extension
 				openplist = (os.path.basename(os.path.normpath(filename))) #filename with extension
 				#print (openplist)
@@ -195,19 +202,6 @@ else:
 					except:
 						pass
 					try:
-						if (plist2[i]['NS.data']):
-							datas = (plist2[i]['NS.data'])
-							h.write('<tr name="hide">')
-							h.write('<td>NS.data</td>')
-							h.write('<td>')
-							h.write(str(datas))
-							h.write('</td>')
-							h.write('</tr>')
-							
-							test = 1
-					except:
-						pass
-					try:
 						if test == 0:
 							if (plist2[i]) == "AppNotificationMessage":
 								h.write('</table>')
@@ -248,8 +242,56 @@ else:
 								
 					
 					#h.write('test')
+				
+				
+				for dict in plist2:
+					liste = dict
+					types = (type(liste))
+					#print (types)
+					try:
+						for k, v in liste.items():
+							if k == 'NS.data':
+								chk = str(v)
+								reduced = (chk[2:8])
+								#print (reduced)
+								if reduced == "bplist":
+									count = count + 1
+									binfile = open('./'+appdirect+'/incepted'+str(count)+'.bplist', 'wb')
+									binfile.write(v)
+									binfile.close()
+
+									procfile = open('./'+appdirect+'/incepted'+str(count)+'.bplist', 'rb')
+									secondplist = ccl_bplist.load(procfile)
+									secondplistint = secondplist["$objects"]
+									print('Bplist processed and exported.')
+									exportedbplistcount = exportedbplistcount + 1
+									h.write('<tr name="hide">')
+									h.write('<td>NS.data</td>')
+									h.write('<td>')
+									h.write(str(secondplistint))
+									h.write('</td>')
+									h.write('</tr>')
+									
+									procfile.close()
+									count = 0
+								else:
+									h.write('<tr name="hide">')
+									h.write('<td>NS.data</td>')
+									h.write('<td>')
+									h.write(str(secondplistint))
+									h.write('</td>')
+									h.write('</tr>')
+					except:
+						pass
 				h.close()
 			elif 'AttachmentsList' in file_name:
 				test = 0 #future development
-print("Process completed.")			
-			
+end = process_time()
+time = start - end
+print(" ")
+print("Process completed.")
+print("Processing time: " + str(abs(time)) )
+
+print("Total notification directories processed:"+str(notdircount))
+print("Total exported bplists from notifications:"+str(exportedbplistcount))			
+		
