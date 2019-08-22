@@ -6,6 +6,9 @@ Python script that generates a HTML triage report of iOS notifications content.
 Usage:   
 python iOSNotificationsParser.py /path/to/data/directory  
 
+See blog post here for more details:  
+https://github.com/abrignoni/iOS-Notifications-Parser
+
 Requisites:  
 1) Python 3 . 
 2) The ccl_bplist module is required for the script to work. It can be found here: https://github.com/cclgroupltd/ccl-bplist (But a version has been inluded in this repo) . 
