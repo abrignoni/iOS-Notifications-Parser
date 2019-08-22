@@ -7,7 +7,10 @@ Usage:
 python iOSNotificationsParser.py /path/to/data/directory  
 
 See blog post here for more details:  
-https://github.com/abrignoni/iOS-Notifications-Parser
+https://abrignoni.blogspot.com/2019/08/ios-12-notifications-triage-parser.html  
+
+For details on the data source location for iO notifications see the blog post here:  
+https://blog.d204n6.com/2019/08/ios-12-delivered-notifications-and-new.html
 
 Requisites:  
 1) Python 3 . 
