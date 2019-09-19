@@ -4,7 +4,8 @@ Python script that generates a HTML triage report of iOS notifications content.
 ![alt text](usage.PNG "Usage example")
 
 Usage:   
-python iOSNotificationsParser.py /path/to/data/directory  
+~~python iOSNotificationsParser.py /path/to/data/directory  ~~
+python iOSNotificationsParser.py -v {11, 12} /path/to/data/directory
 
 See blog post here for more details:  
 https://abrignoni.blogspot.com/2019/08/ios-12-notifications-triage-parser.html  
